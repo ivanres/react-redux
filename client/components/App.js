@@ -2,6 +2,6 @@ import React from 'react'
 
 export default () => {
 	return (
-		<h1>Hello from react</h1>
+		<h1>Hello from react. Welp!</h1>
 		);
 }
