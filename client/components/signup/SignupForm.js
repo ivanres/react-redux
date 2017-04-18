@@ -1,6 +1,6 @@
 import React from 'react';
 import timezones from '../../data/timezones';
-import axios from 'axios';
+//import axios from 'axios';
 
 class SignupForm extends React.Component {
 	constructor(props){
@@ -26,7 +26,8 @@ class SignupForm extends React.Component {
 	onSubmit(e){
 		e.preventDefault();
 		//console.log(this.state);
-		axios.post('/api/users', { user: this.state });
+		//axios.post('/api/users', { user: this.state });
+		this.props.userSignupRequest(this.state);
 	}
 
 	render(){
@@ -37,7 +38,7 @@ class SignupForm extends React.Component {
 
 		return (
 			<form onSubmit={this.onSubmit}>
-				<h1>Join our community!</h1>
+				<h1>Join our community!1</h1>
 
 				<div className="form-group">
 					<label className="control-label">Username</label>
