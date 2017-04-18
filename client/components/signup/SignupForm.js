@@ -1,5 +1,6 @@
 import React from 'react';
 import timezones from '../../data/timezones';
+import axios from 'axios';
 
 class SignupForm extends React.Component {
 	constructor(props){
@@ -24,14 +25,15 @@ class SignupForm extends React.Component {
 
 	onSubmit(e){
 		e.preventDefault();
-		console.log(this.state);
+		//console.log(this.state);
+		axios.post('/api/users', { user: this.state });
 	}
 
 	render(){
 
 		const options = Object.keys(timezones).map(k =>
 			<option key={timezones[k]} value={timezones[k]}>{k}</option>
-			)
+			);
 
 		return (
 			<form onSubmit={this.onSubmit}>
