@@ -3,6 +3,7 @@ import timezones from '../../data/timezones';
 import classnames from 'classnames';
 import validateInput from '../../../server/shared/validations/signup';
 import TextFieldGroup from '../common/TextFieldGroup';
+import { Redirect } from 'react-router-dom';
 
 class SignupForm extends React.Component {
 	constructor(props){
@@ -14,7 +15,8 @@ class SignupForm extends React.Component {
 			passwordConfirmation: '',
 			timezone: '',
 			errors: {},
-			isLoading: false 
+			isLoading: false,
+			redirectToReferer: false 
 		}
 
 		this.onChange = this.onChange.bind(this)
@@ -43,7 +45,10 @@ class SignupForm extends React.Component {
 		if (this.isValid()){
 			this.props.userSignupRequest(this.state)
 				.then(
-					() => {}
+					() => {
+						//browserHistory.push('/');
+						this.setState({ redirectToReferer: true })
+					}
 				) 
 				.catch( 
 					error => {
@@ -56,13 +61,17 @@ class SignupForm extends React.Component {
 	}
 
 	render(){
-		const { errors, isLoading } = this.state;
+		const { errors, isLoading, redirectToReferer } = this.state;
 		const options = Object.keys(timezones).map(k =>
 			<option key={timezones[k]} value={timezones[k]}>{k}</option>
 			);
 
+		if (redirectToReferer) {
+			return <Redirect to="/" />
+		}
+
 		return (
-			<form onSubmit={this.onSubmit}>
+			<form onSubmit={this.onSubmit}> 
 				<h1>Join our community!</h1>
 
 				<TextFieldGroup
@@ -87,6 +96,7 @@ class SignupForm extends React.Component {
 					onChange={this.onChange}
 					value={this.state.password}
 					field="password"
+					type="password"
 				/>
 
 				<TextFieldGroup
@@ -95,6 +105,7 @@ class SignupForm extends React.Component {
 					onChange={this.onChange}
 					value={this.state.passwordConfirmation}
 					field="passwordConfirmation"
+					type="password"
 				/>
 
 				<div className={classnames("form-group", { 'has-error': errors.timezone})}>
