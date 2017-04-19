@@ -1,7 +1,7 @@
 import React from 'react';
 import timezones from '../../data/timezones';
 import classnames from 'classnames'
-//import axios from 'axios';
+import validateInput from '../../../server/shared/validations/signup'
 
 class SignupForm extends React.Component {
 	constructor(props){
@@ -13,7 +13,7 @@ class SignupForm extends React.Component {
 			passwordConfirmation: '',
 			timezone: '',
 			errors: {},
-			isLoading: false
+			isLoading: false 
 		}
 
 		this.onChange = this.onChange.bind(this)
@@ -26,21 +26,32 @@ class SignupForm extends React.Component {
 		});
 	}
 
+	isValid(){
+		const { errors, isValid } = validateInput(this.state);
+
+		if (!isValid) {
+			this.setState({ errors });
+		}
+
+		return isValid;
+	}
+
 	onSubmit(e){ 
 		e.preventDefault();
 		this.setState({errors: {}, isLoading: true});
-		//console.log(this.state);
-		//axios.post('/api/users', { user: this.state });
-		this.props.userSignupRequest(this.state)
-			.then(
-				() => {}
-			)
-			.catch( 
-				error => {
-					console.log(error)
-					this.setState({errors: error.response.data, isLoading: false})
-					}
-				);
+		if (this.isValid()){
+			this.props.userSignupRequest(this.state)
+				.then(
+					() => {}
+				) 
+				.catch( 
+					error => {
+						console.log(error)
+						this.setState({errors: error.response.data, isLoading: false})
+						}
+					);	
+		}
+		
 	}
 
 	render(){
