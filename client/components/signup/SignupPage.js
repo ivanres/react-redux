@@ -3,6 +3,7 @@ import SignupForm from './SignupForm';
 import { connect } from 'react-redux';
 import { userSignupRequest } from '../../actions/signupActions';
 import { addFlashMessage } from '../../actions/flashMessages';
+import PropTypes from 'prop-types';
 
 class SignupPage extends React.Component {
 	render(){
@@ -16,11 +17,11 @@ class SignupPage extends React.Component {
 		);
 	}
 }
-/*
+
 SignupPage.propTypes = {
-	userSignupRequest: React.PropTypes.func.isRequired,
-	addFlashMessage:   React.PropTypes.func.isRequired
+	userSignupRequest: PropTypes.func.isRequired,
+	addFlashMessage:   PropTypes.func.isRequired
 }
-*/
+
 // export  default SignupPage;
 export default connect(null, {userSignupRequest, addFlashMessage})(SignupPage);

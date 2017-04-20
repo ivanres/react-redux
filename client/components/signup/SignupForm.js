@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import validateInput from '../../../server/shared/validations/signup';
 import TextFieldGroup from '../common/TextFieldGroup';
 import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class SignupForm extends React.Component {
 	constructor(props){
@@ -137,8 +138,8 @@ class SignupForm extends React.Component {
 }
 
 SignupForm.propTypes = {
-	userSignupRequest: React.PropTypes.func.isRequired,
-	addFlashMessage:   React.PropTypes.func.isRequired
+	userSignupRequest: PropTypes.func.isRequired,
+	addFlashMessage:   PropTypes.func.isRequired
 }
 
 export  default SignupForm;
