@@ -30,6 +30,16 @@ function validateInput(data, otherValidations) {
 
 }
 
+router.get('/:identifier', (req, res) => {
+	User.query({
+		select: [ 'username', 'email' ],
+		where: { email: req.params.identifier },
+		orWhere: { username: req.params.identifier }
+	}).fetch().then(user => {
+		res.json({user});
+	})
+});
+
 router.post('/', (req, res) => {
 	console.log(req.body);
 

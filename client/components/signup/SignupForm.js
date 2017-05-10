@@ -17,7 +17,8 @@ class SignupForm extends React.Component {
 			timezone: '',
 			errors: {},
 			isLoading: false,
-			redirectToReferer: false 
+			redirectToReferer: false,
+			invalid: false 
 		}
 
 		this.onChange = this.onChange.bind(this)
@@ -47,7 +48,16 @@ class SignupForm extends React.Component {
 		const val = e.target.value;
 		if ( val !== ''){
 			this.props.isUserExists(val).then(res => {
-
+				let errors = this.state.errors;
+				let invalid;
+				if (res.data.user) {
+					errors[field] = 'There is user with such ' + field;
+					invalid = true;
+				} else {
+					errors[field] = '';
+					invalid = false;
+				}
+				this.setState( {errors, invalid} );
 			});
 		}
 	}
@@ -77,7 +87,7 @@ class SignupForm extends React.Component {
 	}
 
 	render(){
-		const { errors, isLoading, redirectToReferer } = this.state;
+		const { errors, isLoading, redirectToReferer, invalid } = this.state;
 		const options = Object.keys(timezones).map(k =>
 			<option key={timezones[k]} value={timezones[k]}>{k}</option>
 			);
@@ -141,7 +151,7 @@ class SignupForm extends React.Component {
 				</div>
 
 				<div className="form-group">
-					<button disabled={isLoading} className="btn btn-primary btn-lg">
+					<button disabled={ isLoading || invalid } className="btn btn-primary btn-lg">
 						Sign up
 					</button>
 				</div>
