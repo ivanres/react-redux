@@ -1,5 +1,6 @@
 import React from 'react';
 import TextFieldGroup from '../common/TextFieldGroup';
+import validateInput from '../../../server/shared/validations/login'
 
 class LoginForm extends React.Component {
 	constructor(props) {
@@ -14,8 +15,21 @@ class LoginForm extends React.Component {
 		this.onChange = this.onChange.bind(this);
 	}
 
+	isValid(){
+		const { errors, isValid } = validateInput(this.state);
+
+		if (!isValid) {
+			this.setState( { errors });
+		}
+
+		return isValid;
+	}
+
 	onSubmit(e) {
 		e.preventDefault();
+		if (this.isValid()) {
+
+		}
 	}
 
 	onChange(e) {
