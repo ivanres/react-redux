@@ -1,6 +1,9 @@
 import React from 'react';
 import TextFieldGroup from '../common/TextFieldGroup';
-import validateInput from '../../../server/shared/validations/login'
+import validateInput from '../../../server/shared/validations/login';
+import { connect } from 'react-redux';
+import { login } from '../../actions/login';
+import PropTypes from 'prop-types';
 
 class LoginForm extends React.Component {
 	constructor(props) {
@@ -9,7 +12,8 @@ class LoginForm extends React.Component {
 			identifier: '',
 			password: '',
 			errors: {},
-			isLoading: false
+			isLoading: false,
+			redirectToReferer: false
 		}
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onChange = this.onChange.bind(this);
@@ -28,7 +32,17 @@ class LoginForm extends React.Component {
 	onSubmit(e) {
 		e.preventDefault();
 		if (this.isValid()) {
-
+			this.setState({ errors: {}, isLoading: true });
+			this.props.login(this.state)
+				.then(
+					res => this.setState({ redirectToReferer: true })
+				)
+				.catch( 
+					error => {
+						console.error(error)
+						this.setState({errors: error.response.data, isLoading: false})
+						}
+					);	
 		}
 	}
 
@@ -37,13 +51,17 @@ class LoginForm extends React.Component {
 	}
 
 	render(){
-		const { errors, identifier, password, isLoading } = this.state;
+		const { errors, identifier, password, isLoading, redirectToReferer } = this.state;
+
+		if (redirectToReferer) {
+			return <Redirect to="/" />
+		}
 
 		return (
 			<form onSubmit={this.onSubmit}>
 				<h1>Login</h1>
 
-				<TextFieldGroup
+				<TextFieldGroup 
 					field="identifier"
 					label="Username / Email"
 					value={identifier}
@@ -70,6 +88,7 @@ class LoginForm extends React.Component {
 }
 
 LoginForm.propTypes = {
+	login: PropTypes.func.isRequired
 }
 
-export default LoginForm; //connect(null, {})(LoginForm);
+export default connect(null, {login})(LoginForm);
