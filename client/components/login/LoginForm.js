@@ -39,8 +39,8 @@ class LoginForm extends React.Component {
 				)
 				.catch( 
 					error => {
-						console.error(error)
-						this.setState({errors: error.response.data, isLoading: false})
+						console.dir(error)
+						this.setState({errors: error.response.data.errors, isLoading: false})
 						}
 					);	
 		}
@@ -61,10 +61,12 @@ class LoginForm extends React.Component {
 			<form onSubmit={this.onSubmit}>
 				<h1>Login</h1>
 
-				<TextFieldGroup 
-					field="identifier"
+				{ errors.form && <div className="alert alert-danger">{errors.form}</div> }
+ 
+				<TextFieldGroup
+					field="identifier" 
 					label="Username / Email"
-					value={identifier}
+					value={identifier} 
 					error={errors.identifier}
 					onChange={this.onChange}
 				/>
