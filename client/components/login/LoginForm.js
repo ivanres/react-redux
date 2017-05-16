@@ -3,6 +3,7 @@ import TextFieldGroup from '../common/TextFieldGroup';
 import validateInput from '../../../server/shared/validations/login';
 import { connect } from 'react-redux';
 import { login } from '../../actions/login';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class LoginForm extends React.Component {
@@ -64,7 +65,7 @@ class LoginForm extends React.Component {
 				{ errors.form && <div className="alert alert-danger">{errors.form}</div> }
  
 				<TextFieldGroup
-					field="identifier" 
+					field="identifier"
 					label="Username / Email"
 					value={identifier} 
 					error={errors.identifier}
