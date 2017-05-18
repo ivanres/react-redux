@@ -6,6 +6,7 @@ import Greetings from './components/Greetings';
 import SignupPage from './components/signup/SignupPage';
 import LoginPage from './components/login/LoginPage';
 import NewEventPage from './components/events/NewEventPage';
+import requireAuth from './utils/requireAuth';
 
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -39,7 +40,7 @@ render(
 				<Route exact path="/" component={Greetings} />
 				<Route path="/signup" component={SignupPage} />
 				<Route path="/login" component={LoginPage} />
-				<Route path="/new-event" component={NewEventPage} />
+				<Route path="/new-event" component={requireAuth(NewEventPage)} />
 			</div>
 		</Router>
 	</Provider>, document.getElementById('app'));
