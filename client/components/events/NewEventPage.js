@@ -6,7 +6,7 @@ export default class NewEventPage extends React.Component {
   render() {
     return (
       <div>
-      	<EventForm />
+      	<EventForm /> 
       </div>
     );
   }

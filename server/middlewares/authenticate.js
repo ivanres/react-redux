@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from '../config';
+import User from '../models/User';
 
 export default (req, res, next) => {
 	const authorizationHeader = req.headers['authorization'];
@@ -12,6 +13,18 @@ export default (req, res, next) => {
 		jwt.verify(token, config.jwtSecret, (err, decoded) => {
 			if (err) {
 				res.status(401).json({ error: 'Failed to authenticate' });
+			} else {
+				User.query({
+					select: ['id', 'username', 'email'],
+					where: { id: decoded.id }
+				})
+				.fetch().then( user => {
+					if (!user){
+						res.status(404).json({ error: 'No such user' });
+					}
+					req.currentUser = user;
+					next();
+				});
 			}
 		});
 	} else {
